@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {TouchableOpacity} from 'react-native';
-import {Container} from './styled';
+import {Container, Title} from './styled';
 import Icons from 'react-native-vector-icons/AntDesign';
 import {useTheme} from 'styled-components/native';
 import {ColorsThemeType} from '../../themes';
@@ -10,6 +10,7 @@ type TopBarProps = {
   onClosePress?: () => void;
   hideHorizontalPadding?: boolean;
   buttonColor?: keyof ColorsThemeType;
+  title?: string;
 };
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -17,6 +18,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   onClosePress,
   hideHorizontalPadding,
   buttonColor,
+  title,
 }) => {
   const {colors, sizing} = useTheme();
 
@@ -35,14 +37,15 @@ export const TopBar: React.FC<TopBarProps> = ({
         <Icons
           name="left"
           color={hasBackPress ? getButtonColor() : 'transparent'}
-          size={sizing.XLG}
+          size={sizing.LG}
         />
       </TouchableOpacity>
+      {Boolean(title) && <Title>{title}</Title>}
       <TouchableOpacity onPress={onClosePress} disabled={!hasClosePress}>
         <Icons
           name="close"
           color={hasClosePress ? getButtonColor() : 'transparent'}
-          size={sizing.XLG}
+          size={sizing.LG}
         />
       </TouchableOpacity>
     </Container>

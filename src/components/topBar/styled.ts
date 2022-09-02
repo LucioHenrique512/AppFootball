@@ -14,3 +14,9 @@ export const Container = styled.View<StyledProps>`
     ${({theme, hideHorizontalPadding}) =>
       hideHorizontalPadding ? 0 : theme.sizing.SM}px;
 `;
+
+export const Title = styled.Text`
+  font-size: ${({theme}) => theme.sizing.SM}px;
+  font-weight: 600;
+  color: ${({theme}) => theme.colors.text};
+`;
