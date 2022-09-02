@@ -23,7 +23,7 @@ export const ListItemContainer = styled.View<ListItemContainerProps>`
     ${({theme, isPair}) => (isPair ? theme.sizing.MD : theme.sizing.MD / 2)}px;
 `;
 
-const ItemSize = RFPercentage(18);
+const ItemSize = RFPercentage(19);
 
 export const ListItemButton = styled.TouchableOpacity`
   background: ${({theme}) => theme.colors.foreground};
@@ -35,9 +35,14 @@ export const ListItemButton = styled.TouchableOpacity`
   padding: ${({theme}) => theme.sizing.SM}px;
   width: ${ItemSize}px;
   height: ${ItemSize}px;
+  justify-content: space-between;
 `;
 
-export const ListItemName = styled.Text``;
+export const ListItemName = styled.Text`
+  font-size: ${({theme}) => theme.sizing.SM}px;
+  color: ${({theme}) => theme.colors.text};
+  text-align: center;
+`;
 
 export const ListItemLogo = styled.Image`
   width: ${RFPercentage(9)}px;
