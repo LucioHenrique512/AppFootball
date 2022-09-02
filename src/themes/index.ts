@@ -16,10 +16,10 @@ const sizing = {
 };
 
 const lightColors = {
-  primary: '#6800FF',
-  secondary: '#CCF5D7',
-  background: '#FFFFFF',
-  foreground: '#000000',
+  primary: '#BB86FC',
+  secondary: '#03DAC6',
+  background: '#F4F4F4',
+  foreground: '#FFFFFF',
   secondaryForeground: '#F2F2F2',
   text: '#000000',
   secondaryText: '#898484',
@@ -27,6 +27,7 @@ const lightColors = {
   success: '#28A745',
   danger: '#DC3545',
   warning: '#FFC107',
+  borderColor: '#00000020',
 };
 
 export const lightTheme = {
@@ -34,11 +35,11 @@ export const lightTheme = {
   sizing,
 };
 
-const darkColors = {
-  primary: '#6800FF',
-  secondary: '#CCF5D7',
+const darkColors: typeof lightColors = {
+  primary: '#BB86FC',
+  secondary: '#03DAC6',
   background: '#121212',
-  foreground: '#DBDBDB',
+  foreground: '#000000',
   secondaryForeground: '#1E1E1E',
   text: '#DBDBDB',
   secondaryText: '#BABABA',
@@ -46,9 +47,10 @@ const darkColors = {
   success: '#28A745',
   danger: '#DC3545',
   warning: '#FFC107',
+  borderColor: '#FFFFFF20',
 };
 
-export const darkTheme = {
+export const darkTheme: typeof lightTheme = {
   colors: darkColors,
   sizing,
 };
