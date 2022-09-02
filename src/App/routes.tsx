@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator<StackParamList>();
 export const Navigation: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
