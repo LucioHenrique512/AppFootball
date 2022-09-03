@@ -1,16 +1,17 @@
 import React from 'react';
 import {FlatList, ListRenderItem} from 'react-native';
-import {TopBar} from '../../components';
+import {DefaultContainer, TopBar} from '../../components';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {
-  Container,
-  ContentContainer,
   ListItemContainer,
   ListItemName,
   ListItemLogo,
   ListItemButton,
 } from './styles';
-
 import LeagesMock from './mock.json';
+import {StackParamList} from '../../App/routes';
+
+type NavigationProps = NavigationProp<StackParamList, 'Home'>;
 
 export type LeagueItemType = {
   id: number;
@@ -19,13 +20,20 @@ export type LeagueItemType = {
 };
 
 export const HomeView: React.FC = () => {
+  const {navigate} = useNavigation<NavigationProps>();
+
   const data = LeagesMock.response;
 
   const renderItem: ListRenderItem<LeagueItemType> = ({item, index}) => {
     const isPair = index % 2 == 0;
+
+    const onPress = () => {
+      navigate('Teams', {leagueId: item.id, leagueName: item.name});
+    };
+
     return (
       <ListItemContainer isPair={isPair}>
-        <ListItemButton>
+        <ListItemButton onPress={onPress}>
           <ListItemLogo
             style={{resizeMode: 'center'}}
             source={{uri: item.logo}}
@@ -37,19 +45,16 @@ export const HomeView: React.FC = () => {
   };
 
   return (
-    <Container>
-      <TopBar title="Ligas" />
-      <ContentContainer>
-        <FlatList
-          data={data.map(item => ({
-            id: item.league.id,
-            logo: item.league.logo,
-            name: item.league.name,
-          }))}
-          numColumns={2}
-          renderItem={renderItem}
-        />
-      </ContentContainer>
-    </Container>
+    <DefaultContainer title="Ligas">
+      <FlatList
+        data={data.map(item => ({
+          id: item.league.id,
+          logo: item.league.logo,
+          name: item.league.name,
+        }))}
+        numColumns={2}
+        renderItem={renderItem}
+      />
+    </DefaultContainer>
   );
 };

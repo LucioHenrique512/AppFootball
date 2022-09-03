@@ -5,7 +5,7 @@ import Icons from 'react-native-vector-icons/AntDesign';
 import {useTheme} from 'styled-components/native';
 import {ColorsThemeType} from '../../themes';
 
-type TopBarProps = {
+export type TopBarProps = {
   onBackPress?: () => void;
   onClosePress?: () => void;
   hideHorizontalPadding?: boolean;
@@ -28,7 +28,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   const getButtonColor = useCallback(() => {
     if (!!buttonColor) return colors[buttonColor];
 
-    return colors.foreground;
+    return colors.text;
   }, [buttonColor]);
 
   return (
