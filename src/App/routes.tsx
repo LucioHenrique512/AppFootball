@@ -2,11 +2,13 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {Home, Teams} from '../screens';
+import {Home, TeamDetails, Teams} from '../screens';
+import {TeamDetailsType} from '../types';
 
 export type StackParamList = {
   Home: undefined;
   Teams: {leagueId: number; leagueName: string};
+  TeamDetails: undefined;
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -17,6 +19,7 @@ export const Navigation: React.FC = () => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Teams" component={Teams} />
+        <Stack.Screen name="TeamDetails" component={TeamDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );
