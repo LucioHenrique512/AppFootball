@@ -1,11 +1,15 @@
 import {RFPercentage} from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
+const ItemSize = RFPercentage(19);
+
 type ListItemContainerProps = {
   isPair?: boolean;
 };
 
-export const ListItemContainer = styled.View<ListItemContainerProps>`
+export const Container = styled.View<ListItemContainerProps>`
+  width: ${ItemSize}px;
+  height: ${ItemSize}px;
   flex: 1;
   margin: 0px
     ${({theme, isPair}) => (isPair ? theme.sizing.MD / 2 : theme.sizing.MD)}px
@@ -13,7 +17,7 @@ export const ListItemContainer = styled.View<ListItemContainerProps>`
     ${({theme, isPair}) => (isPair ? theme.sizing.MD : theme.sizing.MD / 2)}px;
 `;
 
-const ItemSize = RFPercentage(19);
+
 
 export const ListItemButton = styled.TouchableOpacity`
   background: ${({theme}) => theme.colors.foreground};
@@ -23,8 +27,6 @@ export const ListItemButton = styled.TouchableOpacity`
   border-color: ${({theme}) => theme.colors.borderColor};
   align-items: center;
   padding: ${({theme}) => theme.sizing.SM}px;
-  width: ${ItemSize}px;
-  height: ${ItemSize}px;
   justify-content: space-between;
 `;
 

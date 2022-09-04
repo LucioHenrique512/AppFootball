@@ -1,57 +1,47 @@
 import React from 'react';
 import {FlatList, ListRenderItem} from 'react-native';
-import {DefaultContainer, TopBar} from '../../components';
+import {DefaultContainer, ListButton, TopBar} from '../../components';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {
-  ListItemContainer,
-  ListItemName,
-  ListItemLogo,
-  ListItemButton,
-} from './styles';
 import LeagesMock from './mock.json';
 import {StackParamList} from '../../App/routes';
+import {isPair} from '../../utils';
+import {DefaultListItemType} from '../../types';
 
 type NavigationProps = NavigationProp<StackParamList, 'Home'>;
-
-export type LeagueItemType = {
-  id: number;
-  logo: string;
-  name: string;
-};
 
 export const HomeView: React.FC = () => {
   const {navigate} = useNavigation<NavigationProps>();
 
   const data = LeagesMock.response;
 
-  const renderItem: ListRenderItem<LeagueItemType> = ({item, index}) => {
-    const isPair = index % 2 == 0;
+  const dataToListItem = (itens: typeof data): DefaultListItemType[] =>
+    itens.map(item => ({
+      id: item.league.id,
+      logo: item.league.logo,
+      name: item.league.name,
+    }));
 
+  const renderItem: ListRenderItem<DefaultListItemType> = ({item, index}) => {
     const onPress = () => {
       navigate('Teams', {leagueId: item.id, leagueName: item.name});
     };
 
     return (
-      <ListItemContainer isPair={isPair}>
-        <ListItemButton onPress={onPress}>
-          <ListItemLogo
-            style={{resizeMode: 'center'}}
-            source={{uri: item.logo}}
-          />
-          <ListItemName>{item.name}</ListItemName>
-        </ListItemButton>
-      </ListItemContainer>
+      <ListButton
+        key={`league-btn-${item.id}`}
+        isPair={isPair(index)}
+        imageUri={item.logo}
+        text={item.name}
+        onPress={onPress}
+      />
     );
   };
 
   return (
     <DefaultContainer title="Ligas">
       <FlatList
-        data={data.map(item => ({
-          id: item.league.id,
-          logo: item.league.logo,
-          name: item.league.name,
-        }))}
+        keyExtractor={({id}) => `${id}`}
+        data={dataToListItem(data)}
         numColumns={2}
         renderItem={renderItem}
       />
