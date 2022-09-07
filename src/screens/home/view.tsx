@@ -1,18 +1,35 @@
 import React from 'react';
 import {FlatList, ListRenderItem} from 'react-native';
-import {DefaultContainer, ListButton, TopBar} from '../../components';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {
+  DefaultContainer,
+  ErrorComponent,
+  ListButton,
+  LoadingComponent,
+} from '../../components';
 import LeagesMock from './mock.json';
-import {StackParamList} from '../../App/routes';
 import {isPair} from '../../utils';
-import {DefaultListItemType} from '../../types';
+import {DefaultListItemType, LeagueResponseType} from '../../types';
 
-type NavigationProps = NavigationProp<StackParamList, 'Home'>;
+interface IProps {
+  onLeaguePress: (league: DefaultListItemType) => void;
+  data?: LeagueResponseType[];
+  isLoading?: boolean;
+  isError?: boolean;
+}
 
-export const HomeView: React.FC = () => {
-  const {navigate} = useNavigation<NavigationProps>();
+export const HomeView: React.FC<IProps> = ({
+  onLeaguePress,
+  data = [],
+  isLoading,
+  isError,
+}) => {
 
-  const data = LeagesMock.response;
+
+  if (isError)
+    return <ErrorComponent text={'Ocorreu um erro ao carregar as ligas! :('} />;
+
+
+  if (isLoading) return <LoadingComponent text="Carregando ligas" />;
 
   const dataToListItem = (itens: typeof data): DefaultListItemType[] =>
     itens.map(item => ({
@@ -22,29 +39,23 @@ export const HomeView: React.FC = () => {
     }));
 
   const renderItem: ListRenderItem<DefaultListItemType> = ({item, index}) => {
-    const onPress = () => {
-      navigate('Teams', {leagueId: item.id, leagueName: item.name});
-    };
-
     return (
       <ListButton
         key={`league-btn-${item.id}`}
         isPair={isPair(index)}
         imageUri={item.logo}
         text={item.name}
-        onPress={onPress}
+        onPress={() => onLeaguePress(item)}
       />
     );
   };
 
   return (
-    <DefaultContainer title="Ligas">
-      <FlatList
-        keyExtractor={({id}) => `${id}`}
-        data={dataToListItem(data)}
-        numColumns={2}
-        renderItem={renderItem}
-      />
-    </DefaultContainer>
+    <FlatList
+      keyExtractor={({id}) => `${id}`}
+      data={dataToListItem(data)}
+      numColumns={2}
+      renderItem={renderItem}
+    />
   );
 };

@@ -28,3 +28,6 @@ export type PlayerType = {
   injured: boolean;
   photo: string;
 };
+
+export type {BaseApiResponse} from './baseApiResponseType';
+export type {LeagueResponseType} from './leagueResponseType';
