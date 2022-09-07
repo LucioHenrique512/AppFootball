@@ -14,30 +14,32 @@ import {
 import {FlatList, ListRenderItem} from 'react-native';
 import mock from './mock.json';
 import {isPair} from '../../utils';
-import {DefaultListItemType} from '../../types';
+import {TeamDetailsType} from '../../types';
+import {useApplicationContext} from '../../context';
 
 type NavigationProps = NavigationProp<StackParamList, 'Teams'>;
 type RouteProps = RouteProp<StackParamList, 'Teams'>;
 
 export const TeamsView: React.FC = () => {
-  const {goBack} = useNavigation<NavigationProps>();
+  const {setTeamDetails} = useApplicationContext();
+
+  const {goBack, navigate} = useNavigation<NavigationProps>();
   const {params} = useRoute<RouteProps>();
 
   const data = mock.response;
 
-  const dataToListItem = (itens: typeof data): DefaultListItemType[] =>
-    itens.map(item => ({
-      id: item.team.id,
-      name: item.team.name,
-      logo: item.team.logo,
-    }));
+  const dataToListItem = (itens: typeof data): TeamDetailsType[] =>
+    itens.map(item => item.team);
 
   const ListHeaderComponent = () => {
     return <DefaultListHeader title="Liga:" data={params.leagueName} />;
   };
 
-  const renderItem: ListRenderItem<DefaultListItemType> = ({index, item}) => {
-    const onPress = () => {};
+  const renderItem: ListRenderItem<TeamDetailsType> = ({index, item}) => {
+    const onPress = () => {
+      setTeamDetails({...item, leagueName: params.leagueName});
+      navigate('TeamDetails');
+    };
 
     return (
       <ListButton
