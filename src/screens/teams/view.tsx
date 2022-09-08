@@ -1,44 +1,48 @@
 import React from 'react';
+
 import {
-  NavigationProp,
-  RouteProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
-import {StackParamList} from '../../App/routes';
-import {
-  DefaultContainer,
   DefaultListHeader,
+  ErrorComponent,
   ListButton,
+  LoadingComponent,
 } from '../../components';
 import {FlatList, ListRenderItem} from 'react-native';
-import mock from './mock.json';
 import {isPair} from '../../utils';
 import {TeamDetailsType} from '../../types';
-import {useApplicationContext} from '../../context';
+import {TeamResponseType} from '../../types/teamsResponseType';
 
-type NavigationProps = NavigationProp<StackParamList, 'Teams'>;
-type RouteProps = RouteProp<StackParamList, 'Teams'>;
+interface IProps {
+  data: TeamResponseType[];
+  leagueName: string;
+  isError?: boolean;
+  isLoading?: boolean;
+  onTeamPress: (item: TeamDetailsType) => void;
+}
 
-export const TeamsView: React.FC = () => {
-  const {setTeamDetails} = useApplicationContext();
+export const TeamsView: React.FC<IProps> = ({
+  data = [],
+  leagueName,
+  isError,
+  isLoading,
+  onTeamPress,
+}) => {
+  if (isLoading) return <LoadingComponent text="Carregando times" />;
 
-  const {goBack, navigate} = useNavigation<NavigationProps>();
-  const {params} = useRoute<RouteProps>();
-
-  const data = mock.response;
+  if (isError)
+    return (
+      <ErrorComponent text="Ocorreu um erro ao buscar os times dessa liga!" />
+    );
 
   const dataToListItem = (itens: typeof data): TeamDetailsType[] =>
     itens.map(item => item.team);
 
   const ListHeaderComponent = () => {
-    return <DefaultListHeader title="Liga:" data={params.leagueName} />;
+    return <DefaultListHeader title="Liga:" data={leagueName} />;
   };
 
   const renderItem: ListRenderItem<TeamDetailsType> = ({index, item}) => {
     const onPress = () => {
-      setTeamDetails({...item, leagueName: params.leagueName});
-      navigate('TeamDetails');
+      onTeamPress(item);
     };
 
     return (
@@ -53,14 +57,12 @@ export const TeamsView: React.FC = () => {
   };
 
   return (
-    <DefaultContainer title="Times" onBackPress={goBack}>
-      <FlatList
-        stickyHeaderIndices={[0]}
-        ListHeaderComponent={ListHeaderComponent}
-        data={dataToListItem(data)}
-        renderItem={renderItem}
-        numColumns={2}
-      />
-    </DefaultContainer>
+    <FlatList
+      stickyHeaderIndices={[0]}
+      ListHeaderComponent={ListHeaderComponent}
+      data={dataToListItem(data)}
+      renderItem={renderItem}
+      numColumns={2}
+    />
   );
 };
