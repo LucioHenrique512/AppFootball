@@ -1,12 +1,6 @@
 import React from 'react';
 import {FlatList, ListRenderItem} from 'react-native';
-import {
-  DefaultContainer,
-  ErrorComponent,
-  ListButton,
-  LoadingComponent,
-} from '../../components';
-import LeagesMock from './mock.json';
+import {ErrorComponent, ListButton, LoadingComponent} from '../../components';
 import {isPair} from '../../utils';
 import {DefaultListItemType, LeagueResponseType} from '../../types';
 
@@ -23,11 +17,8 @@ export const HomeView: React.FC<IProps> = ({
   isLoading,
   isError,
 }) => {
-
-
   if (isError)
     return <ErrorComponent text={'Ocorreu um erro ao carregar as ligas! :('} />;
-
 
   if (isLoading) return <LoadingComponent text="Carregando ligas" />;
 
