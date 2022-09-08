@@ -1,20 +1,30 @@
 import React from 'react';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {FlatList, ListRenderItem} from 'react-native';
-import {StackParamList} from '../../App/routes';
-import {DefaultContainer} from '../../components';
 import {useApplicationContext} from '../../context';
 import * as Style from './styles';
-import mock from './mock.json';
 import {PlayerType} from '../../types';
+import {PlayersResponseType} from '../../types/playersResponseType';
+import { ErrorComponent, LoadingComponent } from '../../components';
 
-type NavigationProps = NavigationProp<StackParamList, 'TeamDetails'>;
+interface IProps {
+  data?: PlayersResponseType[];
+  isError?: boolean;
+  isLoading?: boolean;
+}
 
-export const TeamDetailView: React.FC = () => {
+export const TeamDetailView: React.FC<IProps> = ({
+  data = [],
+  isError,
+  isLoading,
+}) => {
+  
+  if (isError)
+  return <ErrorComponent text={'Ocorreu um erro ao carregar os jogadores! :('} />;
+  
+  
+  if (isLoading) return <LoadingComponent text="Carregando jogadores" />;
+
   const {teamDetails} = useApplicationContext();
-  const {goBack} = useNavigation<NavigationProps>();
-
-  const data = mock.response;
 
   const dataToListItem = (items: typeof data): PlayerType[] =>
     items.map(item => item.player);
@@ -67,12 +77,10 @@ export const TeamDetailView: React.FC = () => {
   };
 
   return (
-    <DefaultContainer onBackPress={goBack} title="Cruzeiro">
-      <FlatList
-        ListHeaderComponent={ListHeaderComponent}
-        data={dataToListItem(data)}
-        renderItem={renderItem}
-      />
-    </DefaultContainer>
+    <FlatList
+      ListHeaderComponent={ListHeaderComponent}
+      data={dataToListItem(data)}
+      renderItem={renderItem}
+    />
   );
 };

@@ -29,7 +29,7 @@ export const Teams: React.FC = () => {
 
   const onTeamPress = (item: TeamDetailsType) => {
     setTeamDetails({...item, leagueName: params.leagueName});
-    navigate('TeamDetails');
+    navigate('TeamDetails', {teamId: item.id});
   };
 
   return (

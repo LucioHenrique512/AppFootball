@@ -8,7 +8,7 @@ import {TeamDetailsType} from '../types';
 export type StackParamList = {
   Home: undefined;
   Teams: {leagueId: number; leagueName: string};
-  TeamDetails: undefined;
+  TeamDetails: {teamId: number};
 };
 
 const Stack = createNativeStackNavigator<StackParamList>();

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {BaseApiResponse, LeagueResponseType} from '../types';
+import {PlayersResponseType} from '../types/playersResponseType';
 import {TeamResponseType} from '../types/teamsResponseType';
 import {tokenInterceptor} from './interceptors';
 
@@ -20,7 +21,17 @@ export const getLeagues = () =>
     params: {country: 'Brazil'},
   });
 
+const year = new Date().getFullYear();
+
 export const getTeams = (leagueId: number) =>
   api.get<BaseApiResponse<TeamResponseType>>('/teams', {
-    params: {league: leagueId, season: '2022'},
+    params: {league: leagueId, season: year},
+  });
+
+export const getPlayers = (teamId: number) =>
+  api.get<BaseApiResponse<PlayersResponseType>>('/players', {
+    params: {
+      season: year,
+      team: teamId,
+    },
   });

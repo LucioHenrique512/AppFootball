@@ -1,5 +1,5 @@
 import {useQuery} from '@tanstack/react-query';
-import {getLeagues, getTeams} from '../../services';
+import {getTeams} from '../../services';
 
 const teamsDataKey = 'teamsDataKey';
 
